@@ -3,21 +3,12 @@ from django.shortcuts import redirect, render
 
 
 def index(request):
-    # return render(request,'404page.html')
-    return HttpResponse("FoodBlog")
+    return render(request, 'main/index.html')
+
+def about(request):
+    return render(request, 'main/mainFood.html')
 
 
-def categories(request, catid):
-    if request.POST:
-        print(request.POST)
-
-    return HttpResponse(f"<h1>Categories</h1><p>{catid}</p>")
-
-
-def archive(requset,year):
-    if int(year) > 2020:
-        return redirect('/')
-    return HttpResponse(f"<h1>Archive</h1><p>{year}</p>")
 
 
 def pageNotFound(request,exception):
