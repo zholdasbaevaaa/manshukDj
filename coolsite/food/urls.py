@@ -4,9 +4,14 @@ from django.conf.urls import handler404
 from . import views
 from .views import *
 
+
 urlpatterns = [
-    path('', views.index, name='home'),
-    path('about', views.about, name='about'),
-    path('main', views.about, name='main'),
+    path('', FoodHome.as_view(), name='home'),
+    path('about/', about, name='about'),
+    path('addpage/', AddPage.as_view(), name='add_page'),
+    path('contact/', contact, name='contact'),
+    path('login/', login, name='login'),
+    path('post/<slug:post_slug>/', ShowPost.as_view(), name='post'),
+    path('category/<slug:cat_slug>/', FoodCategory.as_view(), name='category'),
 ]
-handler404 = 'food.views.pageNotFound'
+# handler404 = 'food.views.pageNotFound'
