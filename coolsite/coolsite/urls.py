@@ -10,9 +10,16 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('food.urls')),
     path('news/', include('news.urls'))
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]
+
+if settings.DEBUG:
+    import debug_toolbar
+
+    urlpatterns = [
+                      path('__debug__/', include(debug_toolbar.urls)),
+                  ] + urlpatterns
+
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 
 handler404 = 'food.views.pageNotFound'
-# handler400 = acccesDenied
-# handler500 = serverError
-# handler403 = forbidden
