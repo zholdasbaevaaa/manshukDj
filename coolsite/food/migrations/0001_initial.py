@@ -11,8 +11,7 @@ class Migration(migrations.Migration):
     dependencies = [
     ]
 
-
-operations = [
+    operations = [
         migrations.CreateModel(
             name='Category',
             fields=[
@@ -37,7 +36,7 @@ operations = [
                 ('time_create', models.DateTimeField(auto_now_add=True, verbose_name='Время создания')),
                 ('time_update', models.DateTimeField(auto_now=True, verbose_name='Время изменения')),
                 ('is_published', models.BooleanField(default=True, verbose_name='Публикация')),
-                ('cat', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='food.category', verbose_name='Категории')),
+                ('cat', models.ForeignKey(on_delete=django.DjangoTemplates, to='food.category',verbose_name='Категории')),
             ],
             options={
                 'verbose_name': 'Известные ,блюда',
@@ -46,3 +45,5 @@ operations = [
             },
         ),
     ]
+
+

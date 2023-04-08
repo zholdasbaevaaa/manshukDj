@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import *
@@ -14,7 +14,7 @@ from .utils import *
 
 class FoodHome(DataMixin, ListView):
     model = Food
-    template_name = 'food/index.html'
+    template_name = 'main/index.html'
     context_object_name = 'posts'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -27,17 +27,17 @@ class FoodHome(DataMixin, ListView):
 
 
 def about(request):
-    contact_list = Food.object.all()
+    contact_list = Food.objects.all()
     paginator = Paginator(contact_list, 3)
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'food/about.html', { 'page_obj': page_obj, 'menu': menu, 'title': 'О сайте'})
+    return render(request, 'main/about.html', { 'page_obj': page_obj, 'menu': menu, 'title': 'О сайте'})
 
 
 class AddPage(LoginRequiredMixin, DataMixin, CreateView):
     form_class = AddPostForm
-    template_name = 'food/addpage.html'
+    template_name = 'main/addpage.html'
     success_url = reverse_lazy('home')
     login_url = reverse_lazy('home')
     raise_exception = True
@@ -48,8 +48,19 @@ class AddPage(LoginRequiredMixin, DataMixin, CreateView):
         return dict(list(context.items()) + list(c_def.items()))
 
 
-def contact(request):
-    return HttpResponse("Обратная связь")
+class ContactFormView(DataMixin, FormView):
+    form_class = ContactForm
+    template_name = 'main/contact.html'
+    success_url = reverse_lazy('home')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Обратная связь")
+        return dict(list(context.items()) + list(c_def.items()))
+
+    def form_valid(self, form):
+        print(form.cleaned_data)
+        return redirect('home')
 
 
 # def login(request):
@@ -62,7 +73,7 @@ def pageNotFound(request, exception):
 
 class ShowPost(DataMixin, DetailView):
     model = Food
-    template_name = 'food/post.html'
+    template_name = 'main/post.html'
     slug_url_kwarg = 'post_slug'
     context_object_name = 'post'
 
@@ -74,7 +85,7 @@ class ShowPost(DataMixin, DetailView):
 
 class FoodCategory(DataMixin, ListView):
     model = Food
-    template_name = 'food/index.html'
+    template_name = 'main/index.html'
     context_object_name = 'posts'
     allow_empty = False
 
@@ -90,12 +101,12 @@ class FoodCategory(DataMixin, ListView):
     
 class RegisterUser(DataMixin, CreateView):
     form_class = UserCreationForm
-    template_name = 'food/register.html'
+    template_name = 'main/register.html'
     success_url = reverse_lazy('login')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title=context['Регистрация'])
+        c_def = self.get_user_context(title='Регистрация')
         return dict(list(context.items()) + list(c_def.items()))
 
     def form_valid(self, form):
@@ -106,7 +117,7 @@ class RegisterUser(DataMixin, CreateView):
 
 class LoginUser(DataMixin, LoginView):
     form_class = LoginUserForm
-    template_name = 'women/login.html'
+    template_name = 'main/login.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

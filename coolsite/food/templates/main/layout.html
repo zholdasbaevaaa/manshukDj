@@ -16,7 +16,7 @@
     <ul>
         <a href="{% url 'home' %}"><li><i class="fa-regular fa-house"></i> Главная</li></a>
         <a href="{% url 'about' %}"><li><i class="fa-solid fa-user"></i> Про нас</li></a>
-        <a href="{% url 'main' %}"><li><i class="fa-solid fa-window"></i> Контакты</li></a>
+        <a href="{% url 'contact' %}"><li><i class="fa-solid fa-window"></i> Контакты</li></a>
     </ul>
 
 </aside>
@@ -32,7 +32,7 @@
                 {% if request.user.is_authenticated %}
                 <li class="last"> {{user.username}} | <a href="{% url 'logout' %}">Выйти</a></li>
                 {% else %}
-                <li class="last"><a href="{% url register %}">Регистрация</a> | <a href="{% url login %}">Войти</a></li>
+                <li class="last"><a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login' %}">Войти</a></li>
                 {% endif %}
 			</ul>
 			<div class="clear"></div>
