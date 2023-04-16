@@ -10,7 +10,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('captcha/', include('captcha.urls')),
     path('', include('food.urls')),
-    path('news/', include('news.urls'))
+    path('news/', include('news.urls')),
+    path('api/v1/foodlist/', FoodAPIView.as_view()),
+    path('api/v1/foodlist/<int:pk>/', FoodAPIView.as_view()),
 ]
 
 if settings.DEBUG:

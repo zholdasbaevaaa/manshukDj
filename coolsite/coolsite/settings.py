@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'captcha',
     'food.apps.FoodConfig',
     'news',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
