@@ -7,7 +7,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from rest_framework import generics
+from rest_framework import generics, viewsets
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -15,6 +16,7 @@ from .models import Food
 
 from .forms import *
 from .models import *
+from .permitions import IsAdminOrReadOnly, IsOwnerOrReadOnly
 from .serializers import FoodSerializer
 from .utils import *
 
@@ -139,35 +141,57 @@ def logout_user(request):
     return redirect('login')
 
 
-class FoodAPIView(APIView):
-    def get(self, request):
-        f = Food.objects.all()
-        return Response({'posts': FoodSerializer(f, many=True).data})
-
-    def post(self, request):
-        serializer = FoodSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response({'post': serializer.data})
-
-    def put(self, request, *args, **kwargs):
-        pk = kwargs.get("pk", None)
-        if not pk:
-            return Response({"error": "Method PUT not allowed"})
-
-        try:
-            instance = Food.objects.get(pk=pk)
-        except:
-            return Response({"error": "Object does not exists"})
-
-        serializer = FoodSerializer(data=request.data, instance=instance)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response({"post": serializer.data})
+class FoodAPIList(generics.ListCreateAPIView):
+    queryset = Food.objects.all()
+    serializer_class = FoodSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
+class FoodAPIUpdate(generics.RetrieveUpdateAPIView):
+    queryset = Food.objects.all()
+    serializer_class = FoodSerializer
+    permission_classes = (IsOwnerOrReadOnly,)
+
+
+class FoodAPIDestroy(generics.RetrieveDestroyAPIView):
+    queryset = Food.objects.all()
+    serializer_class = FoodSerializer
+    permission_classes = (IsAdminOrReadOnly,)
+
+
+
+# class FoodViewSet(viewsets.ModelViewSet):
+#     queryset = Food.objects.all()
+#     serializer_class = FoodSerializer
+
+
+# class FoodAPIView(APIView):
+#     def get(self, request):
+#         f = Food.objects.all()
+#         return Response({'posts': FoodSerializer(f, many=True).data})
+#
+#     def post(self, request):
+#         serializer = FoodSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#
+#         return Response({'post': serializer.data})
+#
+#     def put(self, request, *args, **kwargs):
+#         pk = kwargs.get("pk", None)
+#         if not pk:
+#             return Response({"error": "Method PUT not allowed"})
+#
+#         try:
+#             instance = Food.objects.get(pk=pk)
+#         except:
+#             return Response({"error": "Object does not exists"})
+#
+#         serializer = FoodSerializer(data=request.data, instance=instance)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#
+#         return Response({"post": serializer.data})
 
 # class FoodAPIView(generics.ListAPIView):
 #     queryset = Food.objects.all()
