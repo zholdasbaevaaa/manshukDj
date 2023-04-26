@@ -1,4 +1,5 @@
 <!--{% load static %}-->
+<!--{% load food_tags %}-->
 <!--<!DOCTYPE html>-->
 <!--<html lang="en">-->
 <!--<head>-->
@@ -21,23 +22,6 @@
 
 <!--</aside>-->
 
-<!--{% block mainmenu %}-->
-<!--		<div class="header">-->
-<!--			<ul id="mainmenu" class="mainmenu">-->
-<!--			<li class="logo"><a href="{% url 'home' %}"><div class="logo"></div></a></li>-->
-<!--{% for m in menu %}-->
-<!--			<li><a href="{% url m.url_name %}">{{m.title}}</a></li>-->
-
-<!--{% endfor %}-->
-<!--                {% if request.user.is_authenticated %}-->
-<!--                <li class="last"> {{user.username}} | <a href="{% url 'logout' %}">Выйти</a></li>-->
-<!--                {% else %}-->
-<!--                <li class="last"><a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login' %}">Войти</a></li>-->
-<!--                {% endif %}-->
-<!--			</ul>-->
-<!--			<div class="clear"></div>-->
-<!--		</div>-->
-<!--{% endblock mainmenu %}-->
 
 
 <!--<main>-->
@@ -75,8 +59,9 @@
 <!--</body>-->
 <!--</html>-->
 
+{% load static %}
+{% load food_tags %}
 
-<!DOCTYPE html>
 <html lang="en">
 <head>
 <title>Home</title>
@@ -98,6 +83,36 @@
 <script src="{% static 'main/js/jquery.ui.totop.js' %}"></script>
 <script src="{% static 'main/js/touchTouch.jquery.js' %}"></script>
 
+<style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .topnav {
+      overflow: hidden;
+      background-color: #333;
+    }
+
+    .topnav a {
+      float: left;
+      color: #f2f2f2;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+    }
+
+    .topnav a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+
+    .topnav a.active {
+      background-color: #04AA6D;
+      color: white;
+    }
+</style>
 <script>
  $(document).ready(function(){
 
@@ -125,6 +140,17 @@
               header
 =================================-->
 <header>
+
+    <div class="topnav">
+        <a href="{% url 'home' %}">
+            Главная
+        </a>
+      <a href="#about">О нас </a>
+    </div>
+
+
+
+
 <!--==============================
             Stuck menu
 =================================-->
@@ -133,20 +159,41 @@
       <div class="row">
         <div class="grid_12">
         <h1>
-          <a href="index.html">
+          <a href="{% url 'home' %}">
             <img src="{% static 'main/img/logo.png' %}" alt="Logo alt">
           </a>
         </h1>
-          <div class="navigation">
+            <div class="navigation">
             <nav>
-              <ul class="sf-menu">
-               <li class="current"><a href="{% url 'home' %}">home</a></li>
-               <li><a href="{% url 'about' %}">about</a></li>
-               <li><a href="{% url 'add_page' %}">Create</a></li>
-               <li><a href="{% url 'contact' %}">Contact</a></li>
-               <li><a href="{% url 'login' %}">Login</a></li>
-               <li><a href="{% url 'register' %}">Register</a></li>
-             </ul>
+              {% block mainmenu %}
+		<div class="header">
+			<ul id="mainmenu" class="mainmenu">
+			<li class="logo"><a href="{% url 'home' %}"><div class="logo"></div></a></li>
+{% for m in menu %}
+			<li><a href="{% url m.url_name %}">{{m.title}}</a></li>
+{% endfor %}
+
+                {% if request.user.is_authenticated %}
+                <li class="last"> {{user.username}} | <a href="{% url 'logout' %}">Выйти</a></li>
+                {% else %}
+                <li class="last"><a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login' %}">Войти</a></li>
+                {% endif %}
+			</ul>
+			<div class="clear"></div>
+		</div>
+{% endblock mainmenu %}
+
+<!--{% for c in cats %}-->
+<!--{% if c.women__count > 0 %}-->
+<!--	{% if c.pk == cat_selected %}-->
+<!--		<li class="selected">{{c.name}}</li>-->
+<!--	{% else %}-->
+<!--		<li><a href="{{ c.get_absolute_url }}">{{c.name}}</a></li>-->
+<!--	{% endif %}-->
+<!--{% endif %}-->
+<!--{% endfor %}-->
+
+
             </nav>
             <div class="clear"></div>
           </div>
@@ -166,7 +213,36 @@
          {% block content %}
           {% endblock %}
     </div>
+        {% if page_obj.has_other_pages %}
+ <nav class="list-pages">
+    <ul>
+{% if page_obj.has_previous %}
+ <li class="page-num">
+     <a href="?page={{ page_obj.previous_page_number }}">&lt;</a>
+ </li>
+ {% endif %}
+
+        {% for p in paginator.page_range %}
+		{% if page_obj.number == p %}
+        <li class="page-num page-num-selected">{{ p }}</li>
+		{% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2  %}
+        <li class="page-num">
+            <a href="?page={{ p }}">{{ p }}</a>
+        </li>
+		{% endif %}
+        {% endfor %}
+
+{% if page_obj.has_next %}
+ <li class="page-num">
+     <a href="?page={{ page_obj.next_page_number }}">&lt;</a>
+ </li>
+ {% endif %}
+    </ul>
+</nav>
+{% endif %}
+
   </div>
+
   </div>
 </section>
 <!--==============================
@@ -184,7 +260,7 @@
           <a href="#" class="fa fa-google-plus"></a>
           <a href="#" class="fa fa-pinterest"></a>
         </div>
-        <div class="copyright"><span class="brand">Bliss </span> &copy; <span id="copyright-year"></span> | <a href="#">Privacy Policy</a> <div>Website designed by <a href="http://www.templatemonster.com/" rel="nofollow">TemplateMonster.com</a></div>
+        <div class="copyright"><span class="brand">Mansh&Molly </span> &copy; <span id="copyright-year"></span> | <a href="#">Privacy Policy</a> <div>Website designed by <a href="http://www.templatemonster.com/" rel="nofollow">TemplateMonster.com</a></div>
         </div>
       </div>
     </div>
