@@ -1,11 +1,25 @@
-{% extends 'food/layout.html' %}
+{% extends 'main/layout.html' %}
 
 {% block content %}
-<h1>{{post.title}}</h1>
 
-{% if post.photo %}
-<p><img class="img-article-left" src="{{post.photo.url}}"></p>
-{% endif %}
+<br><br>
+<table style="width:1000px; background-color:white">
+    <tr>
 
-{{post.content|linebreaks}}
+        <td style="width:500px;">{% if post.photo %}
+            <p><img class="img-article-left" src="{{post.photo.url}}" style="margin-top:15px; margin-left:15px"></p>
+            {% endif %}</td>
+        <td style="width:35px "></td>
+        <td><br>{{post.content|linebreaks}}</td>
+    </tr>
+</table>
+
+
+
+
+
+
+
+
+
 {% endblock %}

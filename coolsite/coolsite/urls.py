@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, re_path
-from django.conf.urls import handler404
+from django.conf.urls import handler404, handler400, handler403,handler500
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 from food.views import *
@@ -36,5 +36,8 @@ if settings.DEBUG:
 
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+handler404 = 'food.views.page_not_found'
+handler400 = 'food.views.bad_request'
+handler403 = 'food.views.permission_denied'
+handler500 = 'food.views.server_error'
 
-handler404 = 'food.views.pageNotFound'

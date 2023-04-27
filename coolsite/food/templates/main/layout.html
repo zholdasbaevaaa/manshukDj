@@ -141,12 +141,7 @@
 =================================-->
 <header>
 
-    <div class="topnav">
-        <a href="{% url 'home' %}">
-            Главная
-        </a>
-      <a href="#about">О нас </a>
-    </div>
+
 
 
 
@@ -154,33 +149,51 @@
 <!--==============================
             Stuck menu
 =================================-->
-  <section id="stuck_container">
-    <div class="container">
-      <div class="row">
-        <div class="grid_12">
-        <h1>
-          <a href="{% url 'home' %}">
-            <img src="{% static 'main/img/logo.png' %}" alt="Logo alt">
-          </a>
-        </h1>
-            <div class="navigation">
-            <nav>
-              {% block mainmenu %}
-		<div class="header">
-			<ul id="mainmenu" class="mainmenu">
-			<li class="logo"><a href="{% url 'home' %}"><div class="logo"></div></a></li>
-{% for m in menu %}
-			<li><a href="{% url m.url_name %}">{{m.title}}</a></li>
-{% endfor %}
+<!--  <section id="stuck_container">-->
+<!--    <div class="container">-->
+<!--      <div class="row">-->
+<!--        <div class="grid_12">-->
+<!--        <h1>-->
+<!--          <a href="{% url 'home' %}">-->
+<!--            <img src="{% static 'main/img/logo.png' %}" alt="Logo alt">-->
+<!--          </a>-->
+<!--        </h1>-->
+<!--            <div class="navigation">-->
+<!--            <nav>-->
+<!--              {% block mainmenu %}-->
+<!--		<div class="header">-->
+<!--			<ul id="mainmenu" class="mainmenu">-->
+<!--			<li class="logo"><a href="{% url 'home' %}"><div class="logo"></div></a></li>-->
+<!--{% for m in menu %}-->
+<!--			<li><a href="{% url m.url_name %}">{{m.title}}</a></li>-->
+<!--{% endfor %}-->
 
-                {% if request.user.is_authenticated %}
-                <li class="last"> {{user.username}} | <a href="{% url 'logout' %}">Выйти</a></li>
-                {% else %}
-                <li class="last"><a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login' %}">Войти</a></li>
-                {% endif %}
-			</ul>
-			<div class="clear"></div>
-		</div>
+<!--                {% if request.user.is_authenticated %}-->
+<!--                <li class="last"> {{user.username}} | <a href="{% url 'logout' %}">Выйти</a></li>-->
+<!--                {% else %}-->
+<!--                <li class="last"><a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login' %}">Войти</a></li>-->
+<!--                {% endif %}-->
+<!--			</ul>-->
+<!--			<div class="clear"></div>-->
+<!--		</div>-->
+
+
+
+
+        <div class="topnav">
+        <a href="{% url 'home' %}">
+            Главная
+        </a>
+       <a href="#about">О нас </a>
+        {% for m in menu %}
+        <a href="{% url m.url_name %}">{{m.title}}</a>
+        {% endfor %}
+        {% if request.user.is_authenticated %}
+              <a href="{% url 'logout' %}">{{user.username}} | Выйти</a>
+        {% else %}
+            <a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login' %}">Войти</a>
+            {% endif %}
+    </div>
 {% endblock mainmenu %}
 
 <!--{% for c in cats %}-->
@@ -203,48 +216,52 @@
   </section>
 </header>
 
-<!--=====================
-          Content
-======================-->
-<section class="content"><div class="ic">More Website Templates @ TemplateMonster.com - July 30, 2014!</div>
+
   <div class="container">
     <div class="row">
       <div class="grid_4">
          {% block content %}
           {% endblock %}
     </div>
+
         {% if page_obj.has_other_pages %}
- <nav class="list-pages">
-    <ul>
-{% if page_obj.has_previous %}
- <li class="page-num">
-     <a href="?page={{ page_obj.previous_page_number }}">&lt;</a>
- </li>
- {% endif %}
+<div class="container text-center">
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+          <span class="sr-only">Previous</span>
+        </a>
+      </li>
+      {% endif %}
 
-        {% for p in paginator.page_range %}
-		{% if page_obj.number == p %}
-        <li class="page-num page-num-selected">{{ p }}</li>
-		{% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2  %}
-        <li class="page-num">
-            <a href="?page={{ p }}">{{ p }}</a>
-        </li>
-		{% endif %}
-        {% endfor %}
+      {% for p in paginator.page_range %}
+        {% if page_obj.number == p %}
+          <li class="page-item active"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+        {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+          <li class="page-item"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+        {% endif %}
+      {% endfor %}
 
-{% if page_obj.has_next %}
- <li class="page-num">
-     <a href="?page={{ page_obj.next_page_number }}">&lt;</a>
- </li>
- {% endif %}
+      {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+          <span class="sr-only">Next</span>
+        </a>
+      </li>
+      {% endif %}
     </ul>
-</nav>
+  </nav>
+</div>
 {% endif %}
-
   </div>
 
-  </div>
 </section>
+
+
 <!--==============================
               footer
 =================================-->
@@ -266,6 +283,7 @@
     </div>
   </div>
 </footer>
+  </div>
 </body>
 </html>
 

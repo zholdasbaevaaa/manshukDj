@@ -17,4 +17,7 @@ urlpatterns = [
     path('post/<slug:post_slug>/', ShowPost.as_view(), name='post'),
     path('category/<slug:cat_slug>/', FoodCategory.as_view(), name='category'),
 ]
-# handler404 = 'food.views.pageNotFound'
+handler400 = 'food.views.bad_request'
+handler403 = 'food.views.permission_denied'
+handler404 = 'food.views.page_not_found'
+handler500 = 'food.views.server_error'

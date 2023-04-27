@@ -1,7 +1,8 @@
 {% extends 'main/layout.html' %}
 {% load static%}
 
-{% block title %} <h1>Главная старница</h1> {% endblock %}
+{% block title %}
+<h1>Главная старница</h1> {% endblock %}
 
 {% block content %}
 <br>
@@ -92,11 +93,29 @@
   </div>
 
   <hr>
-
-
-
-
-
+<center>
+  <table>
+  <tr>
+    <td><img src="https://img1.russianfood.com/dycontent/images_upl/559/big_558596.jpg" style="width:250px; height:200px"></td>
+    <td><img src="https://korfood.ru/upload/iblock/8a5/effuf1h8uakcyi1hxnxnisw4dluyo4m8/tokpokki_legendarnoe_koreyskoe_blyudo_teper_i_v_rossii.jpg" style="margin-left:15px; width:250px;  height:200px"></td>
+    <td><img src="https://img1.russianfood.com/dycontent/images_upl/572/big_571470.jpg"style="margin-left:15px; width:250px;  height:200px" ></td>
+    <td><img src="https://vkuhkne.ru/wp-content/uploads/2019/02/beshbarmak.jpg" style="width:250px;  height:200px; margin-left:15px;"></td>
+  </tr>
+</table>
+</center>
+  <br>
+  <center>
+  <table>
+  <tr>
+    <td><img src="https://img1.russianfood.com/dycontent/images_upl/577/big_576308.jpg" style="width:250px; height:200px"></td>
+    <td><img src="https://gotovim-doma.ru/images/recipe/c/63/c63cf06a52f4ac2da730212167130e53.jpg" style="margin-left:15px; width:250px;  height:200px"></td>
+    <td><img src="https://webpulse.imgsmail.ru/imgpreview?mb=webpulse&key=pulse_cabinet-image-82b46f6a-2fd7-4f69-b7b9-100260497fa4"style="margin-left:15px; width:250px;  height:200px" ></td>
+    <td><img src="https://gotovim-doma.ru/images/recipe/1/e7/1e7bb07244291823b34a7e0b22a5922c.jpg" style="width:250px;  height:200px; margin-left:15px;"></td>
+  </tr>
+</table>
+</center>
+  <br><br>
+  <h1>ALL RECIPES</h1>
 
 <div class="card" >
   <div class="card-body"  >
@@ -111,8 +130,7 @@
                        <p><img class="img-article-left thumb" src="{{f.photo.url}}"></p>
                 {% endif %}
                 <h2>{{f.name}}</h2>
-                <p>{{f.content|linebreaks}}</p>
-                 <p class="link-read-post"><a href="{{ p.get_absolute_url }}"><button style="width:150px; height:40px">Подробнее</button></a></p>
+                 <p class="link-read-post"><a href="{{ f.get_absolute_url }}"><button style="width:150px; height:40px" class="btn btn-success">Подробнее</button></a></p>
               </li>
         {% endfor %}
     </ul>

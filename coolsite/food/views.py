@@ -73,12 +73,14 @@ class ContactFormView(DataMixin, FormView):
         return redirect('home')
 
 
-# def login(request):
-#     return HttpResponse("Авторизация")
-
-
-def pageNotFound(request, exception):
-    return HttpResponseNotFound('<h1>Страница не найдена</h1>')
+def bad_request(request, exception=None):
+    return render(request,'main/errors/400error.html')
+def permission_denied(request, exception=None):
+    return render(request,'main/errors/403error.html', {})
+def page_not_found(request,exception):
+    return render(request, 'main/errors/404error.html', {})
+def server_error(request,exception=None):
+    return render(request,'main/errors/500error.html',{})
 
 
 class ShowPost(DataMixin, DetailView):
@@ -170,8 +172,8 @@ class FoodAPIDestroy(generics.RetrieveDestroyAPIView):
 # class FoodViewSet(viewsets.ModelViewSet):
 #     queryset = Food.objects.all()
 #     serializer_class = FoodSerializer
-
-
+#
+#
 # class FoodAPIView(APIView):
 #     def get(self, request):
 #         f = Food.objects.all()
@@ -199,7 +201,7 @@ class FoodAPIDestroy(generics.RetrieveDestroyAPIView):
 #         serializer.save()
 #
 #         return Response({"post": serializer.data})
-
+#
 # class FoodAPIView(generics.ListAPIView):
 #     queryset = Food.objects.all()
 #     serializer_class = FoodSerializer

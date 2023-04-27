@@ -1,20 +1,36 @@
 {% extends 'main/layout.html' %}
 
 {% block content %}
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <br>
 <h1>{{title}}</h1>
 
-<form action="{% url 'add_page' %}" method="post" enctype="multipart/form-data">
-{% csrf_token %}
-    <div class="form-error">{{ form.non_field_errors }}</div>
 
-{% for f in form %}
-<p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
-<div class="form-error">{{ f.errors }}</div>
-{% endfor %}
+        <br>
+        <form action="{% url 'add_page' %}" method="post" enctype="multipart/form-data"  >
+        {% csrf_token %}
+            <div class="form-error">{{ form.non_field_errors }}</div>
+
+        {% for f in form %}
+        <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
+        <div class="form-error">{{ f.errors }}</div>
+        {% endfor %}
 
 
-    <button type="submit" class="btn btn-primary">Добавить</button>
-</form>
+            <button type="submit" class="btn btn-primary">Добавить</button>
+        </form>
+
+
+
+
 
 {% endblock %}
+
+
+
+
